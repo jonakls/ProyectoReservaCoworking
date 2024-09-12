@@ -21,18 +21,19 @@
     <div class="container">
         <form class="row g-3 form-floating" action="booking/process" method="POST">
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre">
+                <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" name="name">
             </div>
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Apellido" aria-label="Apellido">
+                <input type="text" class="form-control" placeholder="Apellido" aria-label="Apellido" name="secondName">
             </div>
             <div class="col-md-4">
                 <label for="dateBooking" class="form-label">Horas de reserva</label>
-                <input type="date" class="form-control" aria-label="Fecha de reserva" id="dateBooking">
+                <input type="date" class="form-control" aria-label="Fecha de reserva" id="dateBooking"
+                       name="dateBooking">
             </div>
             <div class="col-md-4">
                 <label for="workspace" class="form-label">Horas de reserva</label>
-                <select class="form-select" aria-label="Espacio de trabajo" id="workspace">
+                <select class="form-select" aria-label="Espacio de trabajo" id="workspace" name="workspace">
                     <option selected>Selecciona un espacio de trabajo</option>
                     <option value="1">Escritorio</option>
                     <option value="2">Sala de reuniones</option>
@@ -41,7 +42,7 @@
             </div>
             <div class="col-md-4">
                 <label for="hours" class="form-label">Horas de reserva</label>
-                <input type="number" class="form-control" aria-label="Horas" id="hours">
+                <input type="number" class="form-control" aria-label="Horas" id="hours" name="hours">
             </div>
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary">Reservar</button>
