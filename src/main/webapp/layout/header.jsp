@@ -19,10 +19,10 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="../index.jsp">Inicio</a>
+                    <a class="nav-link active" aria-current="page" href="./index.jsp">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../index.jsp">Lista de reservas</a>
+                    <a class="nav-link" href="./bookingList.jsp">Lista de reservas</a>
                 </li>
             </ul>
             <span class="navbar-text">
