@@ -1,5 +1,8 @@
-<%@ page import="top.jonakls.testpage.entity.BookingEntity" %>
+<%@ page import="top.jonakls.projectcoworking.entity.BookingEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="top.jonakls.projectcoworking.repository.BookingRepository" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,7 +18,8 @@
     <div class="container md-5">
     <%
         
-        final List<BookingEntity> bookings = (List<BookingEntity>) session.getAttribute("bookings");
+        final BookingRepository repository = (BookingRepository) session.getAttribute("bookings");
+        final Collection<BookingEntity> bookings = repository.findAll();
         
         if (bookings == null || bookings.isEmpty()) {
             out.println("<h1 class=\"text-center\">No hay reservas</h1>");
@@ -24,7 +28,6 @@
     %>
     </div>
     <div class="container">
-        <h1 class="text-center">Lista de reservas</h1>
         <table class="table">
             <thead>
             <tr>
@@ -39,16 +42,20 @@
             </thead>
             <tbody>
             <%
-                int count = 1;
-                for (final BookingEntity entity : bookings) {
+                int count = 0;
+                String[] nameComponents;
+                for (BookingEntity entity : bookings) {
                     count++;
+                    
+                    nameComponents = entity.getName().split(" ");
+                    
             %>
             <tr>
                 <th scope="row"><%= count %>
                 </th>
-                <td><%= entity.getName() %>
+                <td><%= nameComponents[0] %>
                 </td>
-                <td><%= entity.getName() %>
+                <td><%= nameComponents[1] %>
                 </td>
                 <td><%= entity.getDate().toString() %>
                 </td>
@@ -58,7 +65,7 @@
                 </td>
                 <td>
                     <form action="booking/delete" method="POST">
-                        <input type="hidden" name="id" value="<%= entity.getName() %>">
+                        <input type="hidden" name="id" value="<%= entity.getId() %>">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </td>

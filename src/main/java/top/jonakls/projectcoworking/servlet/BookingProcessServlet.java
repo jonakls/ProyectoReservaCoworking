@@ -1,6 +1,7 @@
-package top.jonakls.testpage.servlet;
+package top.jonakls.projectcoworking.servlet;
 
-import top.jonakls.testpage.entity.BookingEntity;
+import top.jonakls.projectcoworking.entity.BookingEntity;
+import top.jonakls.projectcoworking.repository.BookingRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,17 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @WebServlet(name = "BookingProcessServlet", urlPatterns = "/booking/process")
 public class BookingProcessServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
+    private static final BookingRepository BOOKING_REPOSITORY = BookingRepository.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,16 +55,15 @@ public class BookingProcessServlet extends HttpServlet {
             return;
         }
 
-        final BookingEntity bookingEntity = new BookingEntity(name + secondName);
-        bookingEntity.setWorkspace(workspace);
+        final BookingEntity bookingEntity = new BookingEntity(name + secondName, name + " " + secondName);
+        bookingEntity.setWorkspace(Integer.parseInt(workspace));
         bookingEntity.setDate(new Date());
         bookingEntity.setHours(Integer.parseInt(timeBooking));
 
-        final List<BookingEntity> bookingList = new ArrayList<>();
-        bookingList.add(bookingEntity);
+        BOOKING_REPOSITORY.save(bookingEntity);
 
         final HttpSession session = req.getSession();
-        session.setAttribute("bookings", bookingList);
+        session.setAttribute("bookings", BOOKING_REPOSITORY);
         resp.sendRedirect("../bookingList.jsp");
     }
 }

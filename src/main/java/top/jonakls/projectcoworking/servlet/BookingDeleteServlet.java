@@ -1,4 +1,6 @@
-package top.jonakls.testpage.servlet;
+package top.jonakls.projectcoworking.servlet;
+
+import top.jonakls.projectcoworking.repository.BookingRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,13 +12,12 @@ import java.io.IOException;
 @WebServlet(name = "BookingDeleteServlet", urlPatterns = "/booking/delete")
 public class BookingDeleteServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
+    private static final BookingRepository bookingRepository = BookingRepository.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String id = req.getParameter("id");
+        bookingRepository.deleteById(id);
+        resp.sendRedirect("../index.jsp?success=1&bookingId=" + id);
     }
 }

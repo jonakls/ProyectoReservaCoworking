@@ -1,16 +1,24 @@
-package top.jonakls.testpage.entity;
+package top.jonakls.projectcoworking.entity;
+
+import top.jonakls.projectcoworking.entity.workspace.BookingWorkspace;
 
 import java.util.Date;
 
 public class BookingEntity {
 
+    private final String id;
     private final String name;
     private Date date;
-    private String workspace;
+    private BookingWorkspace workspace;
     private int hours;
 
-    public BookingEntity(String name) {
+    public BookingEntity(final String id, final String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public String getName() {
@@ -26,11 +34,11 @@ public class BookingEntity {
     }
 
     public String getWorkspace() {
-        return this.workspace;
+        return this.workspace.getName();
     }
 
-    public void setWorkspace(String workspace) {
-        this.workspace = workspace;
+    public void setWorkspace(int workspace) {
+        this.workspace = BookingWorkspace.fromId(workspace);
     }
 
     public int getHours() {
