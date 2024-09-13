@@ -4,6 +4,12 @@ import top.jonakls.projectcoworking.entity.workspace.BookingWorkspace;
 
 import java.util.Date;
 
+/**
+ * Entidad principal de la reserva.
+ * Contiene los atributos de la reserva.
+ *
+ * @version 1.0
+ */
 public class BookingEntity {
 
     private final String id;
@@ -12,6 +18,12 @@ public class BookingEntity {
     private BookingWorkspace workspace;
     private int hours;
 
+    /**
+     * Constructor de la entidad de reserva.
+     *
+     * @param id   Identificador de la reserva. (UUID)
+     * @param name Nombre de la reserva.
+     */
     public BookingEntity(final String id, final String name) {
         this.id = id;
         this.name = name;

@@ -16,17 +16,20 @@ import java.util.UUID;
 @WebServlet(name = "BookingProcessServlet", urlPatterns = "/booking/process")
 public class BookingProcessServlet extends HttpServlet {
 
+    // Singleton del repository de bookings
     private static final BookingRepository BOOKING_REPOSITORY = BookingRepository.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Campos del formulario
         String name = req.getParameter("name");
         String secondName = req.getParameter("secondName");
         String dateBooking = req.getParameter("dateBooking");
         String workspace = req.getParameter("workspace");
         String timeBooking = req.getParameter("hours");
-        System.out.println("date: " + dateBooking);
 
+        // Validaciones de los campos (Posiblemente ya no sean necesarias)
+        // Los mismsos redireccionan a la página de inicio con una confirmación de error
         if (name == null || name.isEmpty()) {
             resp.sendRedirect("../index.jsp?error=1");
             return;
@@ -64,16 +67,16 @@ public class BookingProcessServlet extends HttpServlet {
             return;
         }
 
-        final UUID uuid = UUID.randomUUID();
-        final BookingEntity bookingEntity = new BookingEntity(uuid.toString(), name + " " + secondName);
-        bookingEntity.setWorkspace(Integer.parseInt(workspace));
-        bookingEntity.setDate(DateUtil.parseDate(dateBooking));
-        bookingEntity.setHours(Integer.parseInt(timeBooking));
+        final UUID uuid = UUID.randomUUID(); // Genera un UUID aleatorio para la reserva
+        final BookingEntity bookingEntity = new BookingEntity(uuid.toString(), name + " " + secondName); // Crea la entidad de la reserva
+        bookingEntity.setWorkspace(Integer.parseInt(workspace)); // Setea el workspace seleccionado
+        bookingEntity.setDate(DateUtil.parseDate(dateBooking)); // Setea la fecha de la reserva en formato Date (yyyy-MM-dd)
+        bookingEntity.setHours(Integer.parseInt(timeBooking)); // Setea las horas de la reserva
 
-        BOOKING_REPOSITORY.save(bookingEntity);
+        BOOKING_REPOSITORY.save(bookingEntity); // Guarda la reserva en el repositorio
 
-        final HttpSession session = req.getSession();
-        session.setAttribute("bookings", BOOKING_REPOSITORY);
-        resp.sendRedirect("../bookingList.jsp?success=true");
+        final HttpSession session = req.getSession(); // Obtiene la sesión actual
+        session.setAttribute("bookings", BOOKING_REPOSITORY); // Setea el repositorio de reservas en la sesión
+        resp.sendRedirect("../bookingList.jsp?success=true"); // Redirecciona a la lista de reservas con un mensaje de éxito
     }
 }
