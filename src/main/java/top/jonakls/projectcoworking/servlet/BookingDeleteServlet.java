@@ -18,6 +18,6 @@ public class BookingDeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         bookingRepository.deleteById(id);
-        resp.sendRedirect("../index.jsp?success=1&bookingId=" + id);
+        resp.sendRedirect("../index.jsp");
     }
 }
