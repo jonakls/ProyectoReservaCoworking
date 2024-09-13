@@ -2,6 +2,7 @@ package top.jonakls.projectcoworking.servlet;
 
 import top.jonakls.projectcoworking.entity.BookingEntity;
 import top.jonakls.projectcoworking.repository.BookingRepository;
+import top.jonakls.projectcoworking.util.DateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
+import java.util.UUID;
 
 @WebServlet(name = "BookingProcessServlet", urlPatterns = "/booking/process")
 public class BookingProcessServlet extends HttpServlet {
@@ -24,6 +25,7 @@ public class BookingProcessServlet extends HttpServlet {
         String dateBooking = req.getParameter("dateBooking");
         String workspace = req.getParameter("workspace");
         String timeBooking = req.getParameter("hours");
+        System.out.println("date: " + dateBooking);
 
         if (name == null || name.isEmpty()) {
             resp.sendRedirect("../index.jsp?error=1");
@@ -40,7 +42,7 @@ public class BookingProcessServlet extends HttpServlet {
             return;
         }
 
-        if (workspace == null || workspace.isEmpty()) {
+        if (workspace == null || workspace.isEmpty() || workspace.equals("0")) {
             resp.sendRedirect("../index.jsp?error=4");
             return;
         }
@@ -51,19 +53,27 @@ public class BookingProcessServlet extends HttpServlet {
         }
 
         if (timeBooking.equals("0")) {
-            resp.sendRedirect("../index.jsp?error=6");
+            resp.sendRedirect("../index.jsp?error=5");
             return;
         }
 
-        final BookingEntity bookingEntity = new BookingEntity(name + secondName, name + " " + secondName);
+        int hours = Integer.parseInt(timeBooking);
+
+        if (hours < 1 || hours > 5) {
+            resp.sendRedirect("../index.jsp?error=7");
+            return;
+        }
+
+        final UUID uuid = UUID.randomUUID();
+        final BookingEntity bookingEntity = new BookingEntity(uuid.toString(), name + " " + secondName);
         bookingEntity.setWorkspace(Integer.parseInt(workspace));
-        bookingEntity.setDate(new Date());
+        bookingEntity.setDate(DateUtil.parseDate(dateBooking));
         bookingEntity.setHours(Integer.parseInt(timeBooking));
 
         BOOKING_REPOSITORY.save(bookingEntity);
 
         final HttpSession session = req.getSession();
         session.setAttribute("bookings", BOOKING_REPOSITORY);
-        resp.sendRedirect("../bookingList.jsp");
+        resp.sendRedirect("../bookingList.jsp?success=true");
     }
 }
